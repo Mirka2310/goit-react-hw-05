@@ -1,0 +1,9 @@
+.button {
+    width: fit-content;
+    padding: 10px;
+    border-radius: 8px;
+    color: rgb(1, 7, 7);
+    background-color: rgb(166, 18, 234);
+    border: none;
+    font-size: 14px;
+  }
