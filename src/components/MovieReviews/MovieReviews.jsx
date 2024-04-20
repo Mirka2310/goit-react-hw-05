@@ -1,44 +1,46 @@
-import {useParams} from "react-router-dom";
+import { useParams } from "react-router-dom";
 import ErrorMessage from "../ErrorMessage/ErrorMessage";
 import Loader from "../Loader/Loader";
 import css from "./MovieReviews.module.css";
 import { useEffect, useState } from "react";
+import { getMovieReviews } from "../../api";
 
-
-export default function MovieReviews(){
+export default function MovieReviews() {
     const [error, setError] = useState(false);
-    const [reviews, setReview] = useState([]);
+    const [reviews, setReviews] = useState([]);
     const [loader, setLoader] = useState(false);
-    const {movieId} = useParams();
+    const { movieId } = useParams();
 
-    useEffect(()=>{
+    useEffect(() => {
         setLoader(true);
-        const movieDetailsFromApi = async()=>{
-            try{
-                const {results} = await getMovieReviews(movieId);
+        const movieDetailsFromApi = async () => {
+            try {
+                const { results } = await getMovieReviews(movieId);
                 setReviews(results);
-            }catch(error){
+            } catch (error) {
                 setError(true);
-            }finally{
+            } finally {
                 setLoader(false);
             }
         };
         movieDetailsFromApi();
     }, [movieId]);
 
-    return(
+    return (
         <div>
-            {loader &&<Loader/>}
+            {loader && <Loader />}
             <ul className={css.list}>
-                {reviews.map((reviews)=>{
-                    return(<li key={review.id} className={css.item}>
-                        <h2 className={css.author}>{review.author}</h2>
-                        <p className={css.text}>{review.content}</p>
-                    </li>);
+                {reviews.map((review) => {
+                    return (
+                        <li key={review.id} className={css.item}>
+                            <h2 className={css.author}>{review.author}</h2>
+                            <p className={css.text}>{review.content}</p>
+                        </li>
+                    );
                 })}
             </ul>
-            {reviews.length===0 && <p>No feedback available</p>}
-            {error && <ErrorMessage/>}
+            {reviews.length === 0 && <p>No feedback available</p>}
+            {error && <ErrorMessage />}
         </div>
     );
 }
